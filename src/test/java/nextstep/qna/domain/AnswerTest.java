@@ -12,7 +12,16 @@ public class AnswerTest {
     public static final Answer A2 = new Answer(NsUserTest.SANJIGI, QuestionTest.Q1, "Answers Contents2");
 
     @Test
-    @DisplayName("질문자와 답변자가 다른 경우 답변을 삭제할 수 없다.")
+    @DisplayName("질문자와 답변자가 같은 경우 답변을 삭제할 수 있다")
+    void delete_질문자와_답변자가_같은경우() throws CannotDeleteException {
+        NsUser loginUser = NsUserTest.JAVAJIGI;
+
+        A1.delete(loginUser);
+        Assertions.assertThat(A1.isDeleted()).isTrue();
+    }
+
+    @Test
+    @DisplayName("질문자와 답변자가 다른 경우 답변을 삭제할 수 없다")
     void delete_질문자와_답변자가_다른경우() {
         NsUser loginUser = NsUserTest.JAVAJIGI;
 
