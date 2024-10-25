@@ -29,4 +29,10 @@ public class AnswerTest {
             A2.delete(loginUser);
         }).isInstanceOf(CannotDeleteException.class);
     }
+
+    @Test
+    void toDeleteHistory() {
+        DeleteHistory deleteHistory = A1.toDeleteHistory();
+        Assertions.assertThat(deleteHistory).isNotNull();
+    }
 }

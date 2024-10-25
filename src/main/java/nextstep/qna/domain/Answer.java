@@ -31,11 +31,11 @@ public class Answer {
 
     public Answer(Long id, NsUser writer, Question question, String contents) {
         this.id = id;
-        if(writer == null) {
+        if (writer == null) {
             throw new UnAuthorizedException();
         }
 
-        if(question == null) {
+        if (question == null) {
             throw new NotFoundException();
         }
 
@@ -48,12 +48,15 @@ public class Answer {
         return id;
     }
 
-    public DeleteHistory delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("답변을 삭제할 수 있는 권한이 없습니다.");
         }
 
         this.deleted = true;
+    }
+
+    public DeleteHistory toDeleteHistory() {
         return new DeleteHistory(ContentType.ANSWER, id, writer, LocalDateTime.now());
     }
 
@@ -81,4 +84,5 @@ public class Answer {
     public String toString() {
         return "Answer [id=" + getId() + ", writer=" + writer + ", contents=" + contents + "]";
     }
+
 }

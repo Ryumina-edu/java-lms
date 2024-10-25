@@ -76,17 +76,20 @@ public class Question {
         return writer.equals(loginUser);
     }
 
-    public List<DeleteHistory> delete(NsUser loginUser) throws CannotDeleteException {
+    public void delete(NsUser loginUser) throws CannotDeleteException {
         if (!isOwner(loginUser)) {
             throw new CannotDeleteException("질문을 삭제할 권한이 없습니다.");
         }
 
         this.deleted = true;
+        answers.delete(loginUser);
+    }
 
+    public List<DeleteHistory> toDeleteHistories() {
         List<DeleteHistory> deleteHistories = new ArrayList<>();
         deleteHistories.add(new DeleteHistory(ContentType.QUESTION, id, writer, LocalDateTime.now()));
 
-        return Stream.of(deleteHistories, answers.delete(loginUser))
+        return Stream.of(deleteHistories, answers.toDeleteHistories())
                      .flatMap(Collection::stream)
                      .collect(Collectors.toList());
     }
@@ -103,4 +106,5 @@ public class Question {
     public String toString() {
         return "Question [id=" + getId() + ", title=" + title + ", contents=" + contents + ", writer=" + writer + "]";
     }
+
 }

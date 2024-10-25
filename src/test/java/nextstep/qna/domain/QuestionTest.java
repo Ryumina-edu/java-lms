@@ -7,6 +7,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class QuestionTest {
     public static final Question Q1 = new Question(NsUserTest.JAVAJIGI, "title1", "contents1");
     public static final Question Q2 = new Question(NsUserTest.SANJIGI, "title2", "contents2");
@@ -28,5 +30,13 @@ public class QuestionTest {
         Assertions.assertThatThrownBy(() -> {
             Q2.delete(loginUser);
         }).isInstanceOf(CannotDeleteException.class);
+    }
+
+    @Test
+    void toDeleteHistory() {
+        List<DeleteHistory> deleteHistories = Q1.toDeleteHistories();
+
+        Assertions.assertThat(deleteHistories).isNotNull();
+        Assertions.assertThat(deleteHistories.size()).isEqualTo(1);
     }
 }
