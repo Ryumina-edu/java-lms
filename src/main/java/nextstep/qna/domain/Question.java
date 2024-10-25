@@ -19,7 +19,7 @@ public class Question {
 
     private NsUser writer;
 
-    private Answers answers;
+    private Answers answers = new Answers();
 
     private boolean deleted = false;
 
@@ -67,12 +67,9 @@ public class Question {
         return writer;
     }
 
-    public void addAnswer(List<Answer> answerList) {
-        for (Answer answer : answerList) {
-            answer.toQuestion(this);
-        }
-
-        answers = new Answers(answerList);
+    public void addAnswer(Answer answer) {
+        answer.toQuestion(this);
+        answers.add(answer);
     }
 
     public boolean isOwner(NsUser loginUser) {
