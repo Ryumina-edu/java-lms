@@ -2,12 +2,17 @@ package nextstep.courses.domain;
 
 import nextstep.courses.CannotApplyException;
 
+import java.time.LocalDateTime;
+
 public class Session {
     private Status status;
 
     private PayType payType;
 
     private Students students;
+
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
 
     public Session(Status status) {
         this.status = status;
