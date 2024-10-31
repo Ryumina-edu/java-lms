@@ -6,23 +6,37 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDateTime;
 
 public class Session {
+
+    private Long id;
+
+    private String title;
     private Status status;
 
     private PayType payType;
 
     private Students students;
 
+    private SessionCoverImage sessionCoverImage;
+
     private Price price;
 
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
-    public Session() {
-        this(Status.PREPARE);
+    public Session(String title) {
+        this(0L, title, Status.PREPARE);
     }
 
-    public Session(Status status) {
+    public Session(Long id, String title, Status status) {
+        this.id = id;
+        this.title = title;
         this.status = status;
+    }
+
+    public Session(String title, Status status, SessionCoverImage sessionCoverImage) {
+        this.title = title;
+        this.status = status;
+        this.sessionCoverImage = sessionCoverImage;
     }
 
     public Session(Status status, PayType payType, Students students) {
@@ -50,6 +64,7 @@ public class Session {
         if (!price.isSame(payment)) {
             throw new CannotApplyException("결제 금액과 수강료가 일치하지 않습니다.");
         }
+
     }
 
 }

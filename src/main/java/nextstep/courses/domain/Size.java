@@ -1,0 +1,18 @@
+package nextstep.courses.domain;
+
+public class Size {
+    private static final long MAX_SIZE = 1_048_576L;
+    private final long bytes;
+
+    public Size(long bytes) {
+        if (bytes > MAX_SIZE) {
+            throw new IllegalArgumentException("이미지 크기는 1MB 이하여야 합니다.");
+        }
+
+        this.bytes = bytes;
+    }
+
+    public long getBytes() {
+        return this.bytes;
+    }
+}
