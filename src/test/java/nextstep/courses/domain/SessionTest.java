@@ -11,7 +11,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능해야 한다")
     void 수강신청() {
-        Session session = new Session(Status.PREPARE);
+        Session session = new Session("강의1");
         Payment payment = new Payment("1", 1L, 1L, 800_000L);
 
         Assertions.assertThatThrownBy(() -> {
