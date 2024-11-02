@@ -13,7 +13,7 @@ public class Session {
 
     private PayType payType;
 
-    private Students students;
+    private StudentCount studentCount;
 
     private SessionCoverImage sessionCoverImage;
 
@@ -24,17 +24,17 @@ public class Session {
 
     public Session(String title,
                    PayType payType,
-                   Students students,
+                   StudentCount studentCount,
                    SessionCoverImage sessionCoverImage,
                    Price price,
                    LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        this(title, Status.PREPARE, payType, students, sessionCoverImage, price, startDateTime, endDateTime);
+        this(title, Status.PREPARE, payType, studentCount, sessionCoverImage, price, startDateTime, endDateTime);
     }
 
     public Session(String title,
                    Status status,
                    PayType payType,
-                   Students students,
+                   StudentCount studentCount,
                    SessionCoverImage sessionCoverImage,
                    Price price,
                    LocalDateTime startDateTime,
@@ -42,7 +42,7 @@ public class Session {
         this.title = title;
         this.status = status;
         this.payType = payType;
-        this.students = students;
+        this.studentCount = studentCount;
         this.sessionCoverImage = sessionCoverImage;
         this.price = price;
         this.startDateTime = startDateTime;
@@ -54,7 +54,7 @@ public class Session {
             throw new CannotApplyException("현재 모집중인 강의가 아닙니다.");
         }
 
-        if (PayType.PAY == payType && students.isFull()) {
+        if (PayType.PAY == payType && studentCount.isFull()) {
             throw new CannotApplyException("정원이 초과되어 수강 신청이 불가능합니다.");
         }
 

@@ -19,7 +19,7 @@ class SessionTest {
     @Test
     @DisplayName("강의 수강신청은 강의 상태가 모집중일 때만 가능해야 한다")
     void 수강신청() {
-        Students students = new Students(0, 100);
+        StudentCount studentCount = new StudentCount(0, 100);
 
         SessionCoverImageType imageType = new SessionCoverImageType("jpg");
         Width width = new Width(300);
@@ -33,7 +33,7 @@ class SessionTest {
         Session session = new Session("강의1",
                                       Status.PREPARE,
                                       PayType.FREE,
-                                      students,
+                                      studentCount,
                                       sessionCoverImage,
                                       price,
                                       LocalDateTime.now(),
@@ -49,7 +49,7 @@ class SessionTest {
     @Test
     @DisplayName("유료 강의는 강의 최대 수강 인원을 초과할 수 없다")
     void 최대_수강_인원_초과() {
-        Students students = new Students(100, 100);
+        StudentCount studentCount = new StudentCount(100, 100);
 
         SessionCoverImageType imageType = new SessionCoverImageType("jpg");
         Width width = new Width(300);
@@ -63,7 +63,7 @@ class SessionTest {
         Session session = new Session("강의1",
                                       Status.RECRUIT,
                                       PayType.PAY,
-                                      students,
+                                      studentCount,
                                       sessionCoverImage,
                                       price,
                                       LocalDateTime.now(),
@@ -79,7 +79,7 @@ class SessionTest {
     @Test
     @DisplayName("유료 강의는 수강생이 결제한 금액과 수강료가 일치할 때 수강 신청이 가능하다")
     void 결제금액과_수강료가_일치하지_않는경우() {
-        Students students = new Students(90, 100);
+        StudentCount studentCount = new StudentCount(90, 100);
 
         SessionCoverImageType imageType = new SessionCoverImageType("jpg");
         Width width = new Width(300);
@@ -93,7 +93,7 @@ class SessionTest {
         Session session = new Session("강의1",
                                       Status.RECRUIT,
                                       PayType.PAY,
-                                      students,
+                                      studentCount,
                                       sessionCoverImage,
                                       price,
                                       LocalDateTime.now(),
