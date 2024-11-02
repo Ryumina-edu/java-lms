@@ -1,6 +1,7 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.Session;
 
 import nextstep.courses.CannotApplyException;
+import nextstep.courses.domain.Session.SessionCoverImage.SessionCoverImage;
 import nextstep.payments.domain.Payment;
 
 import java.time.LocalDateTime;

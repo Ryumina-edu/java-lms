@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.Session.SessionCoverImage;
 
 public class Height {
     private static final int MIN_HEIGHT = 200;

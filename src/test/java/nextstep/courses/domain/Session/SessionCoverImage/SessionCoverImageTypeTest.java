@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.Session.SessionCoverImage;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +12,5 @@ class SessionCoverImageTypeTest {
         Assertions.assertThatThrownBy(() -> {
             SessionCoverImageType sessionCoverImageType = new SessionCoverImageType("docx");
         }).isInstanceOf(IllegalArgumentException.class);
-
     }
 }

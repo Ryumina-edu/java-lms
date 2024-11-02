@@ -1,6 +1,12 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.Session;
 
 import nextstep.courses.CannotApplyException;
+import nextstep.courses.domain.Session.SessionCoverImage.Height;
+import nextstep.courses.domain.Session.SessionCoverImage.Ratio;
+import nextstep.courses.domain.Session.SessionCoverImage.SessionCoverImage;
+import nextstep.courses.domain.Session.SessionCoverImage.SessionCoverImageType;
+import nextstep.courses.domain.Session.SessionCoverImage.Size;
+import nextstep.courses.domain.Session.SessionCoverImage.Width;
 import nextstep.payments.domain.Payment;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

@@ -1,4 +1,4 @@
-package nextstep.courses.domain;
+package nextstep.courses.domain.Session;
 
 public class Students {
     private final int studentCount;
