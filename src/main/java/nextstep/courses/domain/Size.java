@@ -1,7 +1,7 @@
 package nextstep.courses.domain;
 
 public class Size {
-    private static final long MAX_SIZE = 1_048_576L;
+    private static final long MAX_SIZE = 1 * 1024 * 1024;
     private final long bytes;
 
     public Size(long bytes) {
