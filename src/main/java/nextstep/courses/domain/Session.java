@@ -52,7 +52,7 @@ public class Session {
         this.price = price;
     }
 
-    public void apply(Payment payment) throws CannotApplyException {
+    public void apply(Payment payment) {
         if (Status.RECRUIT != status) {
             throw new CannotApplyException("현재 모집중인 강의가 아닙니다.");
         }
