@@ -6,10 +6,8 @@ import nextstep.payments.domain.Payment;
 import java.time.LocalDateTime;
 
 public class Session {
-
-    private Long id;
-
     private String title;
+
     private Status status;
 
     private PayType payType;
@@ -23,33 +21,31 @@ public class Session {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
-    public Session(String title) {
-        this(0L, title, Status.PREPARE);
+    public Session(String title,
+                   PayType payType,
+                   Students students,
+                   SessionCoverImage sessionCoverImage,
+                   Price price,
+                   LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        this(title, Status.PREPARE, payType, students, sessionCoverImage, price, startDateTime, endDateTime);
     }
 
-    public Session(Long id, String title, Status status) {
-        this.id = id;
+    public Session(String title,
+                   Status status,
+                   PayType payType,
+                   Students students,
+                   SessionCoverImage sessionCoverImage,
+                   Price price,
+                   LocalDateTime startDateTime,
+                   LocalDateTime endDateTime) {
         this.title = title;
         this.status = status;
-    }
-
-    public Session(String title, Status status, SessionCoverImage sessionCoverImage) {
-        this.title = title;
-        this.status = status;
+        this.payType = payType;
+        this.students = students;
         this.sessionCoverImage = sessionCoverImage;
-    }
-
-    public Session(Status status, PayType payType, Students students) {
-        this.status = status;
-        this.payType = payType;
-        this.students = students;
-    }
-
-    public Session(Status status, PayType payType, Students students, Price price) {
-        this.status = status;
-        this.payType = payType;
-        this.students = students;
         this.price = price;
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
     }
 
     public void apply(Payment payment) {

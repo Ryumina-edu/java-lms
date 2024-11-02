@@ -1,12 +1,8 @@
 package nextstep.courses.domain;
 
 public class Students {
-
-    private int studentCount;
-    private int maxStudentCount;
-
-    public Students() {
-    }
+    private final int studentCount;
+    private final int maxStudentCount;
 
     public Students(int studentCount, int maxStudentCount) {
         this.studentCount = studentCount;
