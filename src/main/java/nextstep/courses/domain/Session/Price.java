@@ -5,8 +5,12 @@ import nextstep.payments.domain.Payment;
 public class Price {
     private long price;
 
-    public Price(long price) {
+    private PayType payType;
+
+    public Price(long price, PayType payType) {
+        payType.isValid(price);
         this.price = price;
+        this.payType = payType;
     }
 
     public boolean isSame(Payment payment) {
