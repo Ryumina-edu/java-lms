@@ -1,67 +1,27 @@
 package nextstep.courses.domain.Session;
 
-import nextstep.courses.CannotApplyException;
-import nextstep.courses.domain.Session.SessionCoverImage.SessionCoverImage;
 import nextstep.payments.domain.Payment;
-
-import java.time.LocalDateTime;
+import nextstep.users.domain.NsUser;
 
 public class Session {
-    private String title;
+    private SessionInfo sessionInfo;
 
-    private Status status;
-
-    private PayType payType;
-
-    private StudentCount studentCount;
-
-    private SessionCoverImage sessionCoverImage;
+    private Enrollment enrollment;
 
     private Price price;
 
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private SessionPeriod sessionPeriod;
 
-    public Session(String title,
-                   PayType payType,
-                   StudentCount studentCount,
-                   SessionCoverImage sessionCoverImage,
-                   Price price,
-                   LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        this(title, Status.PREPARE, payType, studentCount, sessionCoverImage, price, startDateTime, endDateTime);
-    }
-
-    public Session(String title,
-                   Status status,
-                   PayType payType,
-                   StudentCount studentCount,
-                   SessionCoverImage sessionCoverImage,
-                   Price price,
-                   LocalDateTime startDateTime,
-                   LocalDateTime endDateTime) {
-        this.title = title;
-        this.status = status;
-        this.payType = payType;
-        this.studentCount = studentCount;
-        this.sessionCoverImage = sessionCoverImage;
+    public Session(SessionInfo sessionInfo, Enrollment enrollment, Price price, SessionPeriod sessionPeriod) {
+        this.sessionInfo = sessionInfo;
+        this.enrollment = enrollment;
         this.price = price;
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.sessionPeriod = sessionPeriod;
     }
 
-    public void apply(Payment payment) {
-        if (Status.RECRUIT != status) {
-            throw new CannotApplyException("현재 모집중인 강의가 아닙니다.");
-        }
-
-        if (PayType.PAY == payType && studentCount.isFull()) {
-            throw new CannotApplyException("정원이 초과되어 수강 신청이 불가능합니다.");
-        }
-
-        if (!price.isSame(payment)) {
-            throw new CannotApplyException("결제 금액과 수강료가 일치하지 않습니다.");
-        }
-
+    public void enroll(NsUser student, Payment payment) {
+        price.isValid(payment);
+        enrollment.enroll(student);
     }
 
 }
