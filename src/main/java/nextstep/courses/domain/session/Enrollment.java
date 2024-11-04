@@ -4,8 +4,8 @@ import nextstep.courses.CannotApplyException;
 import nextstep.users.domain.NsUser;
 
 public class Enrollment {
-    private Status status;
-    private Students students;
+    private final Status status;
+    private final Students students;
 
     public Enrollment(Status status, Students students) {
         this.status = status;

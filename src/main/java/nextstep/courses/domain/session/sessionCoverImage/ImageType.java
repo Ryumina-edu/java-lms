@@ -9,7 +9,7 @@ public enum ImageType {
     PNG("png"),
     SVG("svg");
 
-    private String type;
+    private final String type;
 
     ImageType(String type) {
         this.type = type;

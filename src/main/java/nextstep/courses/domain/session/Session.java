@@ -4,13 +4,13 @@ import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
 public class Session {
-    private SessionInfo sessionInfo;
+    private final SessionInfo sessionInfo;
 
-    private Enrollment enrollment;
+    private final Enrollment enrollment;
 
-    private Price price;
+    private final Price price;
 
-    private SessionPeriod sessionPeriod;
+    private final SessionPeriod sessionPeriod;
 
     public Session(SessionInfo sessionInfo, Enrollment enrollment, Price price, SessionPeriod sessionPeriod) {
         this.sessionInfo = sessionInfo;

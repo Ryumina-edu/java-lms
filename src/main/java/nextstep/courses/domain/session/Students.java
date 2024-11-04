@@ -9,7 +9,7 @@ import java.util.List;
 public class Students {
     private final int maxStudentCount;
 
-    private List<NsUser> students;
+    private final List<NsUser> students;
 
     public Students(int maxStudentCount) {
         this(maxStudentCount, new ArrayList<>());

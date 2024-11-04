@@ -4,9 +4,9 @@ import nextstep.courses.CannotApplyException;
 import nextstep.payments.domain.Payment;
 
 public class Price {
-    private long price;
+    private final long price;
 
-    private PayType payType;
+    private final PayType payType;
 
     public Price(long price, PayType payType) {
         payType.isValid(price);
