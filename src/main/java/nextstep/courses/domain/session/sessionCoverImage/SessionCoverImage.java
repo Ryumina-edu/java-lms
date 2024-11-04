@@ -1,13 +1,16 @@
 package nextstep.courses.domain.session.sessionCoverImage;
 
 public class SessionCoverImage {
-    private final SessionCoverImageType sessionCoverImageType;
+    private final String imageFileType;
     private final Ratio ratio;
     private final Size size;
 
-    public SessionCoverImage(SessionCoverImageType sessionCoverImageType, Ratio ratio, Size size) {
-        this.sessionCoverImageType = sessionCoverImageType;
+    public SessionCoverImage(String imageFileType, Ratio ratio, Size size) {
+        ImageType.isValid(imageFileType);
+
+        this.imageFileType = imageFileType;
         this.ratio = ratio;
         this.size = size;
     }
+
 }
