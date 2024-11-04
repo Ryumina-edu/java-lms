@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.CannotApplyException;
 import nextstep.payments.domain.Payment;
@@ -6,7 +6,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class PriceTest {
+public class PriceTest {
     public static Price createFreePrice() {
         return new Price(0L, PayType.FREE);
     }

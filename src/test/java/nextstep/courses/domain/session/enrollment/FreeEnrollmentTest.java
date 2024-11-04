@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.CannotApplyException;
 import nextstep.payments.domain.Payment;
@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static nextstep.courses.domain.session.PriceTest.createFreePrice;
+import static nextstep.courses.domain.session.enrollment.PriceTest.createFreePrice;
 
 class FreeEnrollmentTest {
     private Students students;

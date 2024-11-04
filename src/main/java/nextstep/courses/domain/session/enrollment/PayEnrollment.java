@@ -1,15 +1,16 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.enrollment;
 
 import nextstep.courses.CannotApplyException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
-public class FreeEnrollment implements Enrollment {
+public class PayEnrollment implements Enrollment {
+
     private final Status status;
     private final Students students;
     private final Price price;
 
-    public FreeEnrollment(Status status, Students students, Price price) {
+    public PayEnrollment(Status status, Students students, Price price) {
         this.status = status;
         this.students = students;
         this.price = price;
@@ -24,6 +25,12 @@ public class FreeEnrollment implements Enrollment {
         if (students.alreadyEnrolled(student)) {
             throw new CannotApplyException("이미 수강신청이 완료된 학생입니다.");
         }
+
+        if (students.isFull()) {
+            throw new CannotApplyException("정원이 초과되어 수강 신청이 불가능합니다.");
+        }
+
+        price.isValid(payment);
 
         students.enroll(student);
     }

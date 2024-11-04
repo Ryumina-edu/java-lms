@@ -1,4 +1,4 @@
-package nextstep.courses.domain.session;
+package nextstep.courses.domain.session.enrollment;
 
 public enum Status {
     PREPARE, RECRUIT, CLOSE;
