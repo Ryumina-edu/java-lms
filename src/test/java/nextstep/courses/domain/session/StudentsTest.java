@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.CannotApplyException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
@@ -31,7 +30,7 @@ class StudentsTest {
     }
 
     @Test
-    void enroll_정상케이스() {
+    void enroll() {
         NsUser user1 = NsUserTest.JAVAJIGI;
         NsUser user2 = NsUserTest.SANJIGI;
 
@@ -41,34 +40,6 @@ class StudentsTest {
         students.enroll(user2);
 
         Assertions.assertThat(students.countOfStudent()).isEqualTo(2);
-    }
-
-    @Test
-    @DisplayName("학생 등록시 최대 수강 인원을 초과한 경우 CannotApplyException이 발생한다.")
-    void enroll_최대_수강_인원_초과() {
-        NsUser user1 = NsUserTest.JAVAJIGI;
-        NsUser user2 = NsUserTest.SANJIGI;
-
-        Students students = new Students(2, Arrays.asList(user1, user2));
-
-        NsUser newUser = new NsUser(3L, "mina", "password", "name", "mina@test.com");
-
-        Assertions.assertThatThrownBy(() -> {
-            students.enroll(newUser);
-        }).isInstanceOf(CannotApplyException.class);
-    }
-
-    @Test
-    @DisplayName("학생 등록시 이미 등록된 학생일 경우 CannotApplyException이 발생한다.")
-    void enroll_이미_등록된_학생() {
-        NsUser user1 = NsUserTest.JAVAJIGI;
-        NsUser user2 = NsUserTest.SANJIGI;
-
-        Students students = new Students(3, Arrays.asList(user1, user2));
-
-        Assertions.assertThatThrownBy(() -> {
-            students.enroll(user1);
-        }).isInstanceOf(CannotApplyException.class);
     }
 
     @Test
@@ -90,5 +61,16 @@ class StudentsTest {
         Students students = new Students(2, Arrays.asList(user1, user2));
 
         Assertions.assertThat(students.countOfStudent()).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("이미 등록된 학생인 경우 true를 반환한다.")
+    void alreadyEnrolled() {
+        NsUser user1 = NsUserTest.JAVAJIGI;
+        NsUser user2 = NsUserTest.SANJIGI;
+
+        Students students = new Students(2, Arrays.asList(user1, user2));
+
+        Assertions.assertThat(students.alreadyEnrolled(user1)).isTrue();
     }
 }

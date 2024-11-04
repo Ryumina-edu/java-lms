@@ -1,6 +1,5 @@
 package nextstep.courses.domain.session;
 
-import nextstep.courses.CannotApplyException;
 import nextstep.users.domain.NsUser;
 
 import java.util.ArrayList;
@@ -25,14 +24,6 @@ public class Students {
     }
 
     public void enroll(NsUser student) {
-        if (isFull()) {
-            throw new CannotApplyException("정원이 초과되어 수강 신청이 불가능합니다.");
-        }
-
-        if (students.contains(student)) {
-            throw new CannotApplyException("이미 수강신청이 완료된 학생입니다.");
-        }
-
         students.add(student);
     }
 
@@ -42,5 +33,9 @@ public class Students {
 
     public int countOfStudent() {
         return students.size();
+    }
+
+    public boolean alreadyEnrolled(NsUser student) {
+        return students.contains(student);
     }
 }
