@@ -32,7 +32,7 @@ class SessionTest {
 
         Students students = new Students(0);
         Price freePrice = PriceTest.createFreePrice();
-        Enrollment freeEnrollment = new FreeEnrollment(Status.RECRUIT, students, freePrice);
+        Enrollment freeEnrollment = new FreeEnrollment(Status.RECRUIT, students);
 
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(30L));
 
