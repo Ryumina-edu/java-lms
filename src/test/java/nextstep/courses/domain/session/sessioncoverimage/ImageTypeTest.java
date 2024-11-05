@@ -7,17 +7,10 @@ import org.junit.jupiter.api.Test;
 class ImageTypeTest {
 
     @Test
-    @DisplayName("허용되지 않은 이미지 파일 유형일 경우 IllegalArgumentException이 발생한다.")
-    void is_valid_하용되지_않은_파일유형() {
+    @DisplayName("찾고자 하는 파일 유형을 반환하며, 허용되지 않은 파일유형일 경우 IllegalArgumentException이 발생한다.")
+    void find_By_File_Type() {
         Assertions.assertThatThrownBy(() -> {
-            ImageType.isValid("txt");
+            ImageType.findByFileType("docs");
         }).isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @Test
-    @DisplayName("허용되지 않은 파일유형일 경우 false를 반환한다.")
-    void has_type_허용되지_않은_파일유형() {
-        boolean hasType = ImageType.hasType("pptx");
-        Assertions.assertThat(hasType).isFalse();
     }
 }
