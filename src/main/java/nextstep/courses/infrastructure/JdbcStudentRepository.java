@@ -12,8 +12,8 @@ import java.util.List;
 
 @Repository("studentRepository")
 public class JdbcStudentRepository implements StudentRepository {
-    private final static StudentRowMapper STUDENT_ROW_MAPPER = new StudentRowMapper();
-    private JdbcOperations jdbcTemplate;
+    private final StudentRowMapper STUDENT_ROW_MAPPER = new StudentRowMapper();
+    private final JdbcOperations jdbcTemplate;
 
     public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -34,7 +34,7 @@ public class JdbcStudentRepository implements StudentRepository {
         return jdbcTemplate.query(sql, STUDENT_ROW_MAPPER, sessionId);
     }
 
-    private static class StudentRowMapper implements RowMapper<StudentEntity> {
+    private class StudentRowMapper implements RowMapper<StudentEntity> {
 
         @Override
         public StudentEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
