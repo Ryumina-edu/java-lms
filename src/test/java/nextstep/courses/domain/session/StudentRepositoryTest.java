@@ -26,12 +26,16 @@ class StudentRepositoryTest {
 
     @Test
     void crud() {
-        StudentEntity studentEntity = new StudentEntity(1L, 1L);
+        StudentEntity studentEntity1 = new StudentEntity(1L, 1L);
+        StudentEntity studentEntity2 = new StudentEntity(2L, 1L);
 
-        int count = studentRepository.save(studentEntity);
-        Assertions.assertThat(count).isEqualTo(1);
+        StudentEntity studentEntity3 = new StudentEntity(3L, 2L);
+
+        studentRepository.save(studentEntity1);
+        studentRepository.save(studentEntity2);
+        studentRepository.save(studentEntity3);
 
         List<StudentEntity> students = studentRepository.findBySessionId(1L);
-        Assertions.assertThat(students.size()).isEqualTo(3);
+        Assertions.assertThat(students.size()).isEqualTo(2);
     }
 }
