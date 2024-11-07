@@ -65,6 +65,6 @@ create table session (
 
 create table student (
     user_id bigint not null,
-    session_id bigint,
+    session_id bigint not null,
     primary key (user_id)
 );
