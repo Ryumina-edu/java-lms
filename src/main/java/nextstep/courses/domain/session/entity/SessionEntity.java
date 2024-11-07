@@ -3,24 +3,24 @@ package nextstep.courses.domain.session.entity;
 import java.time.LocalDateTime;
 
 public class SessionEntity {
-    private Long id;
+    private final Long id;
 
-    private String title;
+    private final String title;
 
-    private Long creatorId;
+    private final Long creatorId;
 
-    private String status;
+    private final String status;
 
-    private long price;
+    private final long price;
 
-    private String payType;
+    private final String payType;
 
-    private int maxStudentCount;
+    private final int maxStudentCount;
 
-    private String coverImage;
+    private final String coverImage;
 
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private final LocalDateTime startDateTime;
+    private final LocalDateTime endDateTime;
 
     public SessionEntity(String title,
                          Long creatorId,
