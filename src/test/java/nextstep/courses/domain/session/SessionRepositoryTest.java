@@ -3,7 +3,6 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.enrollment.PayType;
 import nextstep.courses.domain.session.enrollment.Status;
 import nextstep.courses.domain.session.entity.SessionEntity;
-import nextstep.courses.infrastructure.CourseRepositoryTest;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +17,7 @@ import java.time.LocalDateTime;
 
 @JdbcTest
 class SessionRepositoryTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CourseRepositoryTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SessionRepositoryTest.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
