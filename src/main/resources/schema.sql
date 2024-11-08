@@ -57,7 +57,7 @@ create table session (
     price INT not null,
     pay_type VARCHAR(30) not null,
     max_student_count INT not null,
-    cover_image varchar(255) not null,
+    cover_image_id bigint not null,
     start_date_time timestamp not null,
     end_date_time timestamp,
     primary key (id)
@@ -67,4 +67,13 @@ create table student (
     user_id bigint not null,
     session_id bigint not null,
     primary key (user_id)
+);
+
+create table cover_image (
+    id bigint not null,
+    image_type VARCHAR(30) not null,
+    width INT not null,
+    height INT not null,
+    size bigint not null,
+    primary key (id)
 );
