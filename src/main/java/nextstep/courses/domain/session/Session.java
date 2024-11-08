@@ -21,4 +21,8 @@ public class Session {
         enrollment.enroll(student, payment);
     }
 
+    public void enrollment(NsUser student) {
+        enrollment.enrollment(student);
+    }
+
 }
