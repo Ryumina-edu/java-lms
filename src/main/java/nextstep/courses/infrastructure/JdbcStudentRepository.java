@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.StudentRepository;
 import nextstep.courses.domain.session.entity.StudentEntity;
+import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,8 +20,11 @@ public class JdbcStudentRepository implements StudentRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public int save(StudentEntity studentEntity) {
+    @Override
+    public int save(NsUser student, long sessionId) {
         String sql = "insert into student (user_id, session_id) values(?, ?)";
+
+        StudentEntity studentEntity = student.from(sessionId);
 
         return jdbcTemplate.update(sql,
                                    studentEntity.getUserId(),
