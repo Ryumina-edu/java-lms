@@ -34,14 +34,21 @@ class SessionRepositoryTest {
                                                         800_000L,
                                                         PayType.PAY.name(),
                                                         100,
-                                                        "test3.jpg",
+                                                        1L,
                                                         LocalDateTime.now(),
                                                         LocalDateTime.now().plusDays(30));
 
         int count = sessionRepository.save(sessionEntity);
         Assertions.assertThat(count).isEqualTo(1);
 
-        SessionEntity savedSessionEntity = sessionRepository.findById(1);
+        SessionEntity savedSessionEntity = sessionRepository.findById(3);
+        Assertions.assertThat(savedSessionEntity.getId()).isEqualTo(3);
         Assertions.assertThat(savedSessionEntity.getTitle()).isEqualTo("강의3");
+    }
+
+    @Test
+    void findByIdForSession() {
+        Session session = sessionRepository.findByIdForSession(1);
+        Assertions.assertThat(session).isNotNull();
     }
 }

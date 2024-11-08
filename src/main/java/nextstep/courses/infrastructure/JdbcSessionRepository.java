@@ -1,7 +1,10 @@
 package nextstep.courses.infrastructure;
 
+import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.entity.SessionCoverImageEntity;
 import nextstep.courses.domain.session.entity.SessionEntity;
+import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImage;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final SessionRowMapper SESSION_ROW_MAPPER = new SessionRowMapper();
+    private final SessionCoverImageRowMapper SESSION_COVER_IMAGE_ROW_MAPPER = new SessionCoverImageRowMapper();
     private final JdbcOperations jdbcTemplate;
 
     public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
@@ -22,8 +26,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(SessionEntity sessionEntity) {
-        String sql = "insert into session (title, creator_id, status, price, pay_type, max_student_count, cover_image, start_date_time, " +
-            "end_date_time) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (title, creator_id, status, price, pay_type, max_student_count, cover_image_id, " +
+            "start_date_time, end_date_time) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql,
                                    sessionEntity.getTitle(),
@@ -32,17 +36,34 @@ public class JdbcSessionRepository implements SessionRepository {
                                    sessionEntity.getPrice(),
                                    sessionEntity.getPayType(),
                                    sessionEntity.getMaxStudentCount(),
-                                   sessionEntity.getCoverImage(),
+                                   sessionEntity.getCoverImageId(),
                                    sessionEntity.getStartDateTime(),
                                    sessionEntity.getEndDateTime());
     }
 
     @Override
     public SessionEntity findById(long sessionId) {
-        String sql = "select id, title, creator_id, status, price, pay_type, max_student_count, cover_image, " +
+        String sql = "select id, title, creator_id, status, price, pay_type, max_student_count, cover_image_id, " +
             "start_date_time, end_date_time from session where id = ?";
 
         return jdbcTemplate.queryForObject(sql, SESSION_ROW_MAPPER, sessionId);
+    }
+
+    @Override
+    public Session findByIdForSession(long sessionId) {
+        String selectSessionSql = "select id, title, creator_id, status, price, pay_type, max_student_count, cover_image_id, " +
+            "start_date_time, end_date_time from session where id = ?";
+        SessionEntity sessionEntity = jdbcTemplate.queryForObject(selectSessionSql,
+                                                                  SESSION_ROW_MAPPER, sessionId);
+        String selectCoverImageSql = "select id, image_type, width, height, size from cover_image where id = ?";
+        SessionCoverImageEntity sessionCoverImageEntity = jdbcTemplate.queryForObject(selectCoverImageSql,
+                                                                                      SESSION_COVER_IMAGE_ROW_MAPPER,
+                                                                                      sessionEntity.getCoverImageId());
+
+        SessionCoverImage sessionCoverImage = sessionCoverImageEntity.toSessionCoverImage();
+        Session session = sessionEntity.toSession(sessionCoverImage);
+
+        return session;
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
@@ -63,9 +84,21 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong("price"),
                 rs.getString("pay_type"),
                 rs.getInt("max_student_count"),
-                rs.getString("cover_image"),
+                rs.getLong("cover_image_id"),
                 toLocalDateTime(rs.getTimestamp("start_date_time")),
                 toLocalDateTime(rs.getTimestamp("end_date_time")));
+        }
+    }
+
+    private class SessionCoverImageRowMapper implements RowMapper<SessionCoverImageEntity> {
+        @Override
+        public SessionCoverImageEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new SessionCoverImageEntity(
+                rs.getLong("id"),
+                rs.getString("image_type"),
+                rs.getInt("width"),
+                rs.getInt("height"),
+                rs.getLong("size"));
         }
     }
 

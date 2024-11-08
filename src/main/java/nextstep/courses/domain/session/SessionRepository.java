@@ -7,4 +7,6 @@ public interface SessionRepository {
 
     SessionEntity findById(long sessionId);
 
+    Session findByIdForSession(long sessionId);
+
 }
