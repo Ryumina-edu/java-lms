@@ -26,7 +26,7 @@ public class JdbcStudentRepository implements StudentRepository {
     public int save(NsUser student, long sessionId) {
         String sql = "insert into student (user_id, session_id) values(?, ?)";
 
-        StudentEntity studentEntity = student.from(sessionId);
+        StudentEntity studentEntity = new StudentEntity(student.getId(), sessionId);
 
         return jdbcTemplate.update(sql,
                                    studentEntity.getUserId(),
