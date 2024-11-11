@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository("studentRepository")
 public class JdbcStudentRepository implements StudentRepository {
@@ -35,7 +37,7 @@ public class JdbcStudentRepository implements StudentRepository {
     public List<StudentEntity> findBySessionId(long sessionId) {
         String sql = "select user_id, session_id from student where session_id = ?";
 
-        return jdbcTemplate.query(sql, STUDENT_ROW_MAPPER, sessionId);
+        return Optional.ofNullable(jdbcTemplate.query(sql, STUDENT_ROW_MAPPER, sessionId)).orElse(new ArrayList<>());
     }
 
     private class StudentRowMapper implements RowMapper<StudentEntity> {

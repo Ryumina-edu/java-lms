@@ -3,6 +3,7 @@ package nextstep.courses.domain.session;
 import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.courses.infrastructure.JdbcStudentRepository;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ class StudentRepositoryTest {
 
     @Test
     void crud() {
-        NsUser newStudent = new NsUser(3L, "fbalsk8897", "password12", "ryumina", "fbalsk8897@test.com");
+        NsUser newStudent = NsUserTest.NEW_USER;
 
         studentRepository.save(newStudent, 1L);
 

@@ -4,6 +4,9 @@ import nextstep.courses.domain.session.enrollment.PayType;
 import nextstep.courses.domain.session.enrollment.Status;
 import nextstep.courses.domain.session.entity.SessionEntity;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
+import nextstep.courses.infrastructure.JdbcStudentRepository;
+import nextstep.users.domain.UserRepository;
+import nextstep.users.infrastructure.JdbcUserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,9 +24,15 @@ class SessionRepositoryTest {
 
     private SessionRepository sessionRepository;
 
+    private StudentRepository studentRepository;
+
+    private UserRepository userRepository;
+
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
+        userRepository = new JdbcUserRepository(jdbcTemplate);
+        studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, studentRepository, userRepository);
     }
 
     @Test

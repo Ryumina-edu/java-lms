@@ -2,9 +2,13 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
+import nextstep.courses.domain.session.StudentRepository;
 import nextstep.courses.domain.session.entity.SessionCoverImageEntity;
 import nextstep.courses.domain.session.entity.SessionEntity;
+import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImage;
+import nextstep.users.domain.NsUser;
+import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -13,15 +17,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final SessionRowMapper SESSION_ROW_MAPPER = new SessionRowMapper();
     private final SessionCoverImageRowMapper SESSION_COVER_IMAGE_ROW_MAPPER = new SessionCoverImageRowMapper();
     private final JdbcOperations jdbcTemplate;
+    private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate, StudentRepository studentRepository, UserRepository userRepository) {
         this.jdbcTemplate = jdbcTemplate;
+        this.studentRepository = studentRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -60,8 +70,14 @@ public class JdbcSessionRepository implements SessionRepository {
                                                                                       SESSION_COVER_IMAGE_ROW_MAPPER,
                                                                                       sessionEntity.getCoverImageId());
 
+        List<NsUser> students = new ArrayList<>();
+        List<StudentEntity> studentEntityList = studentRepository.findBySessionId(sessionId);
+        studentEntityList.forEach((studentEntity) -> {
+            userRepository.findById(studentEntity.getUserId()).ifPresent(students::add);
+        });
+
         SessionCoverImage sessionCoverImage = sessionCoverImageEntity.toSessionCoverImage();
-        Session session = sessionEntity.toSession(sessionCoverImage);
+        Session session = sessionEntity.toSession(sessionCoverImage, students);
 
         return session;
     }

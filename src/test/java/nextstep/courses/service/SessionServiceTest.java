@@ -7,6 +7,7 @@ import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.courses.infrastructure.JdbcStudentRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
+import nextstep.users.domain.NsUserTest;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.assertj.core.api.Assertions;
@@ -41,13 +42,14 @@ class SessionServiceTest {
 
     @BeforeEach
     void setUp() {
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate);
-        studentRepository = new JdbcStudentRepository(jdbcTemplate);
         userRepository = new JdbcUserRepository(jdbcTemplate);
+        studentRepository = new JdbcStudentRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, studentRepository, userRepository);
+
         sessionService = new SessionService(sessionRepository, studentRepository, userRepository);
 
-        newStudent = new NsUser(3L, "fbalsk8897", "password12", "ryumina", "fbalsk8897@test.com");
-        payment = new Payment("3", 1L, 3L, 800_000L);
+        newStudent = NsUserTest.NEW_USER;
+        payment = new Payment("4", 2L, 4L, 800_000L);
     }
 
     @Test
@@ -55,7 +57,7 @@ class SessionServiceTest {
         sessionService.enroll(2L, newStudent, payment);
 
         List<StudentEntity> students = studentRepository.findBySessionId(2L);
-        Assertions.assertThat(students.size()).isEqualTo(1);
+        Assertions.assertThat(students.size()).isEqualTo(2);
     }
 
     @Test

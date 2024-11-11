@@ -10,8 +10,10 @@ import nextstep.courses.domain.session.enrollment.Price;
 import nextstep.courses.domain.session.enrollment.Status;
 import nextstep.courses.domain.session.enrollment.Students;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImage;
+import nextstep.users.domain.NsUser;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class SessionEntity {
     private final Long id;
@@ -123,17 +125,19 @@ public class SessionEntity {
             '}';
     }
 
-    public Session toSession(SessionCoverImage sessionCoverImage) {
+    public Session toSession(SessionCoverImage sessionCoverImage, List<NsUser> students) {
         if (PayType.isPay(payType)) {
             return new Session(
                 new SessionInfo(title, sessionCoverImage, creatorId),
-                new PayEnrollment(Status.valueOf(status), new Students(maxStudentCount), new Price(price, PayType.valueOf(payType))),
+                new PayEnrollment(Status.valueOf(status),
+                                  new Students(maxStudentCount, students),
+                                  new Price(price, PayType.valueOf(payType))),
                 new SessionPeriod(startDateTime, endDateTime));
         }
 
         return new Session(
             new SessionInfo(title, sessionCoverImage, creatorId),
-            new FreeEnrollment(Status.valueOf(status), new Students(maxStudentCount)),
+            new FreeEnrollment(Status.valueOf(status), new Students(maxStudentCount, students)),
             new SessionPeriod(startDateTime, endDateTime));
     }
 }
