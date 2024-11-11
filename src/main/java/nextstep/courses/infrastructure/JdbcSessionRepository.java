@@ -2,11 +2,10 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.StudentRepository;
 import nextstep.courses.domain.session.entity.SessionCoverImageEntity;
 import nextstep.courses.domain.session.entity.SessionEntity;
-import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImage;
+import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageRepository;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
@@ -27,12 +26,14 @@ public class JdbcSessionRepository implements SessionRepository {
     private final SessionRowMapper SESSION_ROW_MAPPER = new SessionRowMapper();
     private final SessionCoverImageRowMapper SESSION_COVER_IMAGE_ROW_MAPPER = new SessionCoverImageRowMapper();
     private final JdbcOperations jdbcTemplate;
-    private final StudentRepository studentRepository;
+    private final SessionCoverImageRepository sessionCoverImageRepository;
     private final UserRepository userRepository;
 
-    public JdbcSessionRepository(JdbcOperations jdbcTemplate, StudentRepository studentRepository, UserRepository userRepository) {
+    public JdbcSessionRepository(JdbcOperations jdbcTemplate,
+                                 SessionCoverImageRepository sessionCoverImageRepository,
+                                 UserRepository userRepository) {
         this.jdbcTemplate = jdbcTemplate;
-        this.studentRepository = studentRepository;
+        this.sessionCoverImageRepository = sessionCoverImageRepository;
         this.userRepository = userRepository;
     }
 
@@ -70,6 +71,7 @@ public class JdbcSessionRepository implements SessionRepository {
                                                                                       SESSION_ROW_MAPPER, sessionId))
                                               .orElseThrow(NotFoundException::new);
 
+        // TODO: AS-IS 소스 제거
         String selectCoverImageSql = "select id, image_type, width, height, size from cover_image where id = ?";
         SessionCoverImageEntity sessionCoverImageEntity = Optional.ofNullable(jdbcTemplate.queryForObject(selectCoverImageSql,
                                                                                                           SESSION_COVER_IMAGE_ROW_MAPPER,
@@ -78,7 +80,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
         List<NsUser> students = userRepository.findBySessionId(sessionId).orElse(new ArrayList<>());
 
-        SessionCoverImage sessionCoverImage = sessionCoverImageEntity.toSessionCoverImage();
+        SessionCoverImage sessionCoverImage = sessionCoverImageRepository.findById(sessionEntity.getCoverImageId());
         Session session = sessionEntity.toSession(sessionCoverImage, students);
 
         return session;

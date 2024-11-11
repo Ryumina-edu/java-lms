@@ -3,6 +3,8 @@ package nextstep.courses.service;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.StudentRepository;
 import nextstep.courses.domain.session.entity.StudentEntity;
+import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageRepository;
+import nextstep.courses.infrastructure.JdbcSessionCoverImageRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
 import nextstep.courses.infrastructure.JdbcStudentRepository;
 import nextstep.payments.domain.Payment;
@@ -32,6 +34,8 @@ class SessionServiceTest {
 
     private UserRepository userRepository;
 
+    private SessionCoverImageRepository sessionCoverImageRepository;
+
     private SessionService sessionService;
 
     @Autowired
@@ -44,7 +48,8 @@ class SessionServiceTest {
     void setUp() {
         userRepository = new JdbcUserRepository(jdbcTemplate);
         studentRepository = new JdbcStudentRepository(jdbcTemplate);
-        sessionRepository = new JdbcSessionRepository(jdbcTemplate, studentRepository, userRepository);
+        sessionCoverImageRepository = new JdbcSessionCoverImageRepository(jdbcTemplate);
+        sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionCoverImageRepository, userRepository);
 
         sessionService = new SessionService(sessionRepository, studentRepository, userRepository);
 
