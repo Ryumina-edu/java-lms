@@ -7,6 +7,7 @@ import nextstep.courses.domain.session.entity.SessionCoverImageEntity;
 import nextstep.courses.domain.session.entity.SessionEntity;
 import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImage;
+import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import nextstep.users.domain.UserRepository;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -19,6 +20,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
@@ -63,12 +65,16 @@ public class JdbcSessionRepository implements SessionRepository {
     public Session findByIdForSession(long sessionId) {
         String selectSessionSql = "select id, title, creator_id, status, price, pay_type, max_student_count, cover_image_id, " +
             "start_date_time, end_date_time from session where id = ?";
-        SessionEntity sessionEntity = jdbcTemplate.queryForObject(selectSessionSql,
-                                                                  SESSION_ROW_MAPPER, sessionId);
+
+        SessionEntity sessionEntity = Optional.ofNullable(jdbcTemplate.queryForObject(selectSessionSql,
+                                                                                      SESSION_ROW_MAPPER, sessionId))
+                                              .orElseThrow(NotFoundException::new);
+
         String selectCoverImageSql = "select id, image_type, width, height, size from cover_image where id = ?";
-        SessionCoverImageEntity sessionCoverImageEntity = jdbcTemplate.queryForObject(selectCoverImageSql,
-                                                                                      SESSION_COVER_IMAGE_ROW_MAPPER,
-                                                                                      sessionEntity.getCoverImageId());
+        SessionCoverImageEntity sessionCoverImageEntity = Optional.ofNullable(jdbcTemplate.queryForObject(selectCoverImageSql,
+                                                                                                          SESSION_COVER_IMAGE_ROW_MAPPER,
+                                                                                                          sessionEntity.getCoverImageId()))
+                                                                  .orElseThrow(NotFoundException::new);
 
         List<NsUser> students = new ArrayList<>();
         List<StudentEntity> studentEntityList = studentRepository.findBySessionId(sessionId);
