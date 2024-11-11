@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.enrollment.EnrollmentStatus;
 import nextstep.courses.domain.session.enrollment.PayType;
 import nextstep.courses.domain.session.enrollment.Status;
 import nextstep.courses.domain.session.entity.SessionEntity;
@@ -41,6 +42,7 @@ class SessionRepositoryTest {
         SessionEntity sessionEntity = new SessionEntity("강의3",
                                                         1L,
                                                         Status.CLOSE.name(),
+                                                        EnrollmentStatus.IMPOSSIBLE.name(),
                                                         800_000L,
                                                         PayType.PAY.name(),
                                                         100,

@@ -37,13 +37,14 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public int save(SessionEntity sessionEntity) {
-        String sql = "insert into session (title, creator_id, status, price, pay_type, max_student_count, cover_image_id, " +
-            "start_date_time, end_date_time) values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into session (title, creator_id, status, enrollment_status, price, pay_type, max_student_count, cover_image_id, " +
+            "start_date_time, end_date_time) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         return jdbcTemplate.update(sql,
                                    sessionEntity.getTitle(),
                                    sessionEntity.getCreatorId(),
                                    sessionEntity.getStatus(),
+                                   sessionEntity.getEnrollmentStatus(),
                                    sessionEntity.getPrice(),
                                    sessionEntity.getPayType(),
                                    sessionEntity.getMaxStudentCount(),
@@ -54,7 +55,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public SessionEntity findById(long sessionId) {
-        String sql = "select id, title, creator_id, status, price, pay_type, max_student_count, cover_image_id, " +
+        String sql = "select id, title, creator_id, status, enrollment_status, price, pay_type, max_student_count, cover_image_id, " +
             "start_date_time, end_date_time from session where id = ?";
 
         return jdbcTemplate.queryForObject(sql, SESSION_ROW_MAPPER, sessionId);
@@ -62,7 +63,7 @@ public class JdbcSessionRepository implements SessionRepository {
 
     @Override
     public Session findByIdForSession(long sessionId) {
-        String selectSessionSql = "select id, title, creator_id, status, price, pay_type, max_student_count, cover_image_id, " +
+        String selectSessionSql = "select id, title, creator_id, status, enrollment_status, price, pay_type, max_student_count, cover_image_id, " +
             "start_date_time, end_date_time from session where id = ?";
 
         SessionEntity sessionEntity = Optional.ofNullable(jdbcTemplate.queryForObject(selectSessionSql,
@@ -92,6 +93,7 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getString("title"),
                 rs.getLong("creator_id"),
                 rs.getString("status"),
+                rs.getString("enrollment_status"),
                 rs.getLong("price"),
                 rs.getString("pay_type"),
                 rs.getInt("max_student_count"),

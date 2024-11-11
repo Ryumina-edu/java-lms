@@ -54,6 +54,7 @@ create table session (
     title varchar(255) not null,
     creator_id bigint not null,
     status VARCHAR(30) not null,
+    enrollment_status VARCHAR(30) not null,
     price INT not null,
     pay_type VARCHAR(30) not null,
     max_student_count INT not null,

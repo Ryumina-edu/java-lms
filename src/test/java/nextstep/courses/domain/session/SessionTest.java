@@ -2,9 +2,8 @@ package nextstep.courses.domain.session;
 
 import nextstep.courses.CannotApplyException;
 import nextstep.courses.domain.session.enrollment.Enrollment;
+import nextstep.courses.domain.session.enrollment.EnrollmentStatus;
 import nextstep.courses.domain.session.enrollment.FreeEnrollment;
-import nextstep.courses.domain.session.enrollment.Price;
-import nextstep.courses.domain.session.enrollment.PriceTest;
 import nextstep.courses.domain.session.enrollment.Status;
 import nextstep.courses.domain.session.enrollment.Students;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImage;
@@ -31,8 +30,7 @@ class SessionTest {
         SessionInfo sessionInfo = new SessionInfo("강의1", sessionCoverImage, 1L);
 
         Students students = new Students(0);
-        Price freePrice = PriceTest.createFreePrice();
-        Enrollment freeEnrollment = new FreeEnrollment(Status.RECRUIT, students);
+        Enrollment freeEnrollment = new FreeEnrollment(Status.RECRUIT, EnrollmentStatus.POSSIBLE, students);
 
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(30L));
 
