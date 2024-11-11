@@ -76,14 +76,17 @@ public class JdbcSessionRepository implements SessionRepository {
                                                                                                           sessionEntity.getCoverImageId()))
                                                                   .orElseThrow(NotFoundException::new);
 
+        // TODO: AS-IS 소스 제거
         List<NsUser> students = new ArrayList<>();
         List<StudentEntity> studentEntityList = studentRepository.findBySessionId(sessionId);
         studentEntityList.forEach((studentEntity) -> {
             userRepository.findById(studentEntity.getUserId()).ifPresent(students::add);
         });
 
+        List<NsUser> students2 = userRepository.findBySessionId(sessionId).orElse(new ArrayList<>());
+
         SessionCoverImage sessionCoverImage = sessionCoverImageEntity.toSessionCoverImage();
-        Session session = sessionEntity.toSession(sessionCoverImage, students);
+        Session session = sessionEntity.toSession(sessionCoverImage, students2);
 
         return session;
     }
