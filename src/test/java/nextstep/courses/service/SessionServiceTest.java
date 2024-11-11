@@ -51,7 +51,7 @@ class SessionServiceTest {
         sessionCoverImageRepository = new JdbcSessionCoverImageRepository(jdbcTemplate);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionCoverImageRepository, userRepository);
 
-        sessionService = new SessionService(sessionRepository, studentRepository, userRepository);
+        sessionService = new SessionService(sessionRepository, studentRepository);
 
         newStudent = NsUserTest.NEW_USER;
         payment = new Payment("4", 2L, 4L, 800_000L);

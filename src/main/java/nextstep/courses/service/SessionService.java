@@ -5,7 +5,6 @@ import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.StudentRepository;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
-import nextstep.users.domain.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,12 +14,9 @@ public class SessionService {
 
     private StudentRepository studentRepository;
 
-    private UserRepository userRepository;
-
-    public SessionService(SessionRepository sessionRepository, StudentRepository studentRepository, UserRepository userRepository) {
+    public SessionService(SessionRepository sessionRepository, StudentRepository studentRepository) {
         this.sessionRepository = sessionRepository;
         this.studentRepository = studentRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional

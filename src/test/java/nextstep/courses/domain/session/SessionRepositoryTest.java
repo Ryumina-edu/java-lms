@@ -6,7 +6,6 @@ import nextstep.courses.domain.session.entity.SessionEntity;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.JdbcSessionCoverImageRepository;
 import nextstep.courses.infrastructure.JdbcSessionRepository;
-import nextstep.courses.infrastructure.JdbcStudentRepository;
 import nextstep.users.domain.UserRepository;
 import nextstep.users.infrastructure.JdbcUserRepository;
 import org.assertj.core.api.Assertions;
@@ -26,8 +25,6 @@ class SessionRepositoryTest {
 
     private SessionRepository sessionRepository;
 
-    private StudentRepository studentRepository;
-
     private SessionCoverImageRepository sessionCoverImageRepository;
 
     private UserRepository userRepository;
@@ -35,7 +32,6 @@ class SessionRepositoryTest {
     @BeforeEach
     void setUp() {
         userRepository = new JdbcUserRepository(jdbcTemplate);
-        studentRepository = new JdbcStudentRepository(jdbcTemplate);
         sessionCoverImageRepository = new JdbcSessionCoverImageRepository(jdbcTemplate);
         sessionRepository = new JdbcSessionRepository(jdbcTemplate, sessionCoverImageRepository, userRepository);
     }
