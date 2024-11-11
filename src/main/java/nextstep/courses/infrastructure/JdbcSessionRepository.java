@@ -2,7 +2,6 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
-import nextstep.courses.domain.session.entity.SessionCoverImageEntity;
 import nextstep.courses.domain.session.entity.SessionEntity;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImage;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageRepository;
@@ -24,7 +23,6 @@ import java.util.Optional;
 @Repository("sessionRepository")
 public class JdbcSessionRepository implements SessionRepository {
     private final SessionRowMapper SESSION_ROW_MAPPER = new SessionRowMapper();
-    private final SessionCoverImageRowMapper SESSION_COVER_IMAGE_ROW_MAPPER = new SessionCoverImageRowMapper();
     private final JdbcOperations jdbcTemplate;
     private final SessionCoverImageRepository sessionCoverImageRepository;
     private final UserRepository userRepository;
@@ -71,13 +69,6 @@ public class JdbcSessionRepository implements SessionRepository {
                                                                                       SESSION_ROW_MAPPER, sessionId))
                                               .orElseThrow(NotFoundException::new);
 
-        // TODO: AS-IS 소스 제거
-        String selectCoverImageSql = "select id, image_type, width, height, size from cover_image where id = ?";
-        SessionCoverImageEntity sessionCoverImageEntity = Optional.ofNullable(jdbcTemplate.queryForObject(selectCoverImageSql,
-                                                                                                          SESSION_COVER_IMAGE_ROW_MAPPER,
-                                                                                                          sessionEntity.getCoverImageId()))
-                                                                  .orElseThrow(NotFoundException::new);
-
         List<NsUser> students = userRepository.findBySessionId(sessionId).orElse(new ArrayList<>());
 
         SessionCoverImage sessionCoverImage = sessionCoverImageRepository.findById(sessionEntity.getCoverImageId());
@@ -107,18 +98,6 @@ public class JdbcSessionRepository implements SessionRepository {
                 rs.getLong("cover_image_id"),
                 toLocalDateTime(rs.getTimestamp("start_date_time")),
                 toLocalDateTime(rs.getTimestamp("end_date_time")));
-        }
-    }
-
-    private class SessionCoverImageRowMapper implements RowMapper<SessionCoverImageEntity> {
-        @Override
-        public SessionCoverImageEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new SessionCoverImageEntity(
-                rs.getLong("id"),
-                rs.getString("image_type"),
-                rs.getInt("width"),
-                rs.getInt("height"),
-                rs.getLong("size"));
         }
     }
 
