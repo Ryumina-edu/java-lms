@@ -73,7 +73,7 @@ drop table if exists student;
 create table student (
     user_id bigint not null,
     session_id bigint not null,
-    primary key (user_id)
+    UNIQUE (user_id, session_id)
 );
 
 drop table if exists cover_image;
