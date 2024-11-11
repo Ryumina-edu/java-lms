@@ -35,8 +35,4 @@ public class PayEnrollment implements Enrollment {
         students.enroll(student);
     }
 
-    public void enrollment(NsUser student) {
-        students.enroll(student);
-    }
-
 }

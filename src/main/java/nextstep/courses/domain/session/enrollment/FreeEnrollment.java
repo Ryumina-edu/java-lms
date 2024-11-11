@@ -26,8 +26,4 @@ public class FreeEnrollment implements Enrollment {
         students.enroll(student);
     }
 
-    public void enrollment(NsUser student) {
-        students.enroll(student);
-    }
-
 }
