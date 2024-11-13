@@ -8,5 +8,5 @@ public interface UserRepository {
 
     Optional<NsUser> findByUserId(String userId);
 
-    Optional<List<NsUser>> findBySessionId(long sessionId);
+    List<NsUser> findBySessionId(long sessionId);
 }

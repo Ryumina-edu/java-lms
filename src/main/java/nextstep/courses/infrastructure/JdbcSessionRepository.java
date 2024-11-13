@@ -70,7 +70,7 @@ public class JdbcSessionRepository implements SessionRepository {
                                                                                       SESSION_ROW_MAPPER, sessionId))
                                               .orElseThrow(NotFoundException::new);
 
-        List<NsUser> students = userRepository.findBySessionId(sessionId).orElse(new ArrayList<>());
+        List<NsUser> students = userRepository.findBySessionId(sessionId);
 
         List<SessionCoverImage> sessionCoverImages = sessionCoverImageRepository.findBySessionId(sessionId);
         Session session = sessionEntity.toSession(sessionCoverImages, students);

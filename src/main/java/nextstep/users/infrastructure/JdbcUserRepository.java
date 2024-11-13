@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,10 +38,10 @@ public class JdbcUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<List<NsUser>> findBySessionId(long sessionId) {
+    public List<NsUser> findBySessionId(long sessionId) {
         String sql = "select ns_user.* from ns_user, student where ns_user.id = student.user_id and student.session_id = ?";
 
-        return Optional.ofNullable(jdbcTemplate.query(sql, USER_ROW_MAPPER, sessionId));
+        return Optional.ofNullable(jdbcTemplate.query(sql, USER_ROW_MAPPER, sessionId)).orElse(new ArrayList<>());
     }
 
     private LocalDateTime toLocalDateTime(Timestamp timestamp) {
