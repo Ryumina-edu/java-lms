@@ -15,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageTest.createHeight;
 import static nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageTest.createRatio;
@@ -27,7 +28,7 @@ class SessionTest {
         SessionCoverImage sessionCoverImage = new SessionCoverImage("jpg",
                                                                     createRatio(createWidth(300), createHeight(200)),
                                                                     createSize(1_048_575L));
-        SessionInfo sessionInfo = new SessionInfo("강의1", sessionCoverImage, 1L);
+        SessionInfo sessionInfo = new SessionInfo("강의1", List.of(sessionCoverImage), 1L);
 
         Students students = new Students(0);
         Enrollment freeEnrollment = new FreeEnrollment(Status.RECRUIT, EnrollmentStatus.POSSIBLE, students);
