@@ -20,5 +20,6 @@ INSERT INTO student (user_id, session_id) VALUES ( 1, 1 );
 INSERT INTO student (user_id, session_id) VALUES ( 2, 1 );
 INSERT INTO student (user_id, session_id) VALUES ( 3, 2 );
 
-INSERT INTO COVER_IMAGE (id, image_type, width, height, size) VALUES ( 1, 'JPG', 300, 200, 1048000);
-INSERT INTO COVER_IMAGE (id, image_type, width, height, size) VALUES ( 2, 'JPG', 300, 200, 1048000);
+INSERT INTO COVER_IMAGE (id, session_id, image_type, width, height, size) VALUES (1, 1, 'JPG', 300, 200, 1048000);
+INSERT INTO COVER_IMAGE (id, session_id, image_type, width, height, size) VALUES (2, 1, 'PNG', 300, 200, 948000);
+INSERT INTO COVER_IMAGE (id, session_id, image_type, width, height, size) VALUES (3, 2, 'JPG', 300, 200, 1048000);
