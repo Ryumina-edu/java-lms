@@ -52,4 +52,14 @@ class StudentRepositoryTest {
         int selectedStudents = studentRepository.select(1L, userIds);
         Assertions.assertThat(selectedStudents).isEqualTo(userIds.size());
     }
+
+    @Test
+    void cancel() {
+        long userId = 1L;
+        studentRepository.cancel(1L, userId);
+
+        List<StudentEntity> selected = studentRepository.findByIdAndSessionId(1L, List.of(userId));
+
+        Assertions.assertThat(selected.get(0).isSelected()).isFalse();
+    }
 }
