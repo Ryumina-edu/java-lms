@@ -52,4 +52,9 @@ public class SessionService {
         studentRepository.select(sessionId, userIdList);
     }
 
+    @Transactional
+    public void cancel(long sessionId, long userId) {
+        studentRepository.cancel(sessionId, userId);
+    }
+
 }

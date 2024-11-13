@@ -96,4 +96,14 @@ class SessionServiceTest {
             sessionService.select(1L, userIds);
         }).isInstanceOf(NoSuchElementException.class);
     }
+
+    @Test
+    void cancel() {
+        long userId = 1L;
+        sessionService.cancel(1L, userId);
+
+        List<StudentEntity> selected = studentRepository.findByIdAndSessionId(1L, List.of(userId));
+
+        Assertions.assertThat(selected.get(0).isSelected()).isFalse();
+    }
 }
