@@ -10,4 +10,8 @@ public interface StudentRepository {
 
     List<StudentEntity> findBySessionId(long sessionId);
 
+    List<StudentEntity> findByIdAndSessionId(long sessionId, List<Long> userIds);
+
+    int select(long sessionId, List<Long> userIdList);
+
 }

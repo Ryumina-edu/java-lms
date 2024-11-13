@@ -35,4 +35,21 @@ class StudentRepositoryTest {
         List<StudentEntity> students = studentRepository.findBySessionId(1L);
         Assertions.assertThat(students.size()).isEqualTo(3);
     }
+
+    @Test
+    void findByIdAndSessionId() {
+        List<Long> userIds = List.of(1L, 2L);
+
+        List<StudentEntity> selected = studentRepository.findByIdAndSessionId(1L, userIds);
+
+        Assertions.assertThat(selected.size()).isEqualTo(userIds.size());
+    }
+
+    @Test
+    void select() {
+        List<Long> userIds = List.of(1L, 2L);
+
+        int selectedStudents = studentRepository.select(1L, userIds);
+        Assertions.assertThat(selectedStudents).isEqualTo(userIds.size());
+    }
 }

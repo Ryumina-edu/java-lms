@@ -5,21 +5,26 @@ import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository("studentRepository")
 public class JdbcStudentRepository implements StudentRepository {
     private final StudentRowMapper STUDENT_ROW_MAPPER = new StudentRowMapper();
     private final JdbcOperations jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public JdbcStudentRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
     }
 
     @Override
@@ -39,6 +44,28 @@ public class JdbcStudentRepository implements StudentRepository {
         String sql = "select user_id, session_id, selected from student where session_id = ?";
 
         return Optional.ofNullable(jdbcTemplate.query(sql, STUDENT_ROW_MAPPER, sessionId)).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public List<StudentEntity> findByIdAndSessionId(long sessionId, List<Long> userIds) {
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("sessionId", sessionId);
+        parameterMap.put("userIds", userIds);
+
+        String sql = "select user_id, session_id, selected from student where session_id = :sessionId and user_id in (:userIds)";
+
+        return Optional.ofNullable(namedParameterJdbcTemplate.query(sql, parameterMap, STUDENT_ROW_MAPPER)).orElse(new ArrayList<>());
+    }
+
+    @Override
+    public int select(long sessionId, List<Long> userIds) {
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("sessionId", sessionId);
+        parameterMap.put("userIds", userIds);
+
+        String sql = "update student set selected = true where session_id = :sessionId and user_id in (:userIds)";
+
+        return namedParameterJdbcTemplate.update(sql, parameterMap);
     }
 
     private class StudentRowMapper implements RowMapper<StudentEntity> {
