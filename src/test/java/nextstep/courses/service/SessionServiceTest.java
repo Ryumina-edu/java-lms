@@ -23,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @ExtendWith(MockitoExtension.class)
 @JdbcTest
@@ -73,4 +74,26 @@ class SessionServiceTest {
         });
     }
 
+    @Test
+    @DisplayName("선발된 수강생에 대해 수강 승인 처리")
+    void select_수강승인_성공() {
+        List<Long> userIds = List.of(1L, 2L);
+
+        sessionService.select(1L, userIds);
+
+        List<StudentEntity> selectedStudents = studentRepository.findByIdAndSessionId(1L, userIds);
+
+        Assertions.assertThat(selectedStudents.get(0).isSelected()).isTrue();
+        Assertions.assertThat(selectedStudents.get(1).isSelected()).isTrue();
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 수강생인 경우 수강 승인 처리 실패")
+    void select_수강승인_실패() {
+        List<Long> userIds = List.of(1L, 2L, 3L, 4L);
+
+        Assertions.assertThatThrownBy(() -> {
+            sessionService.select(1L, userIds);
+        }).isInstanceOf(NoSuchElementException.class);
+    }
 }
