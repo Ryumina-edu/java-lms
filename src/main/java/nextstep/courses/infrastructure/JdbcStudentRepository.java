@@ -2,6 +2,7 @@ package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.StudentRepository;
 import nextstep.courses.domain.session.entity.StudentEntity;
+import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
@@ -54,7 +55,9 @@ public class JdbcStudentRepository implements StudentRepository {
 
         String sql = "select user_id, session_id, selected from student where session_id = :sessionId and user_id in (:userIds)";
 
-        return Optional.ofNullable(namedParameterJdbcTemplate.query(sql, parameterMap, STUDENT_ROW_MAPPER)).orElse(new ArrayList<>());
+        return Optional.ofNullable(namedParameterJdbcTemplate.query(sql, parameterMap, STUDENT_ROW_MAPPER))
+                       .filter(data -> !data.isEmpty())
+                       .orElseThrow(NotFoundException::new);
     }
 
     @Override
@@ -66,6 +69,15 @@ public class JdbcStudentRepository implements StudentRepository {
         String sql = "update student set selected = true where session_id = :sessionId and user_id in (:userIds)";
 
         return namedParameterJdbcTemplate.update(sql, parameterMap);
+    }
+
+    @Override
+    public void cancel(long sessionId, long userId) {
+        findByIdAndSessionId(sessionId, List.of(userId));
+
+        String sql = "update student set selected = false where session_id = ? and user_id = ?";
+
+        jdbcTemplate.update(sql, sessionId, userId);
     }
 
     private class StudentRowMapper implements RowMapper<StudentEntity> {

@@ -14,4 +14,5 @@ public interface StudentRepository {
 
     int select(long sessionId, List<Long> userIdList);
 
+    void cancel(long sessionId, long userId);
 }
