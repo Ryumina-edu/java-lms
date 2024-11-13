@@ -72,8 +72,8 @@ public class JdbcSessionRepository implements SessionRepository {
 
         List<NsUser> students = userRepository.findBySessionId(sessionId).orElse(new ArrayList<>());
 
-        SessionCoverImage sessionCoverImage = sessionCoverImageRepository.findById(sessionEntity.getCoverImageId());
-        Session session = sessionEntity.toSession(sessionCoverImage, students);
+        List<SessionCoverImage> sessionCoverImages = sessionCoverImageRepository.findBySessionId(sessionId);
+        Session session = sessionEntity.toSession(sessionCoverImages, students);
 
         return session;
     }
