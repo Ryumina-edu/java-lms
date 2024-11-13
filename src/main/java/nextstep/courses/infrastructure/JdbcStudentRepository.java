@@ -24,18 +24,19 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public int save(NsUser student, long sessionId) {
-        String sql = "insert into student (user_id, session_id) values(?, ?)";
+        String sql = "insert into student (user_id, session_id, selected) values(?, ?, ?)";
 
         StudentEntity studentEntity = new StudentEntity(student.getId(), sessionId);
 
         return jdbcTemplate.update(sql,
                                    studentEntity.getUserId(),
-                                   studentEntity.getSessionId());
+                                   studentEntity.getSessionId(),
+                                   studentEntity.isSelected());
     }
 
     @Override
     public List<StudentEntity> findBySessionId(long sessionId) {
-        String sql = "select user_id, session_id from student where session_id = ?";
+        String sql = "select user_id, session_id, selected from student where session_id = ?";
 
         return Optional.ofNullable(jdbcTemplate.query(sql, STUDENT_ROW_MAPPER, sessionId)).orElse(new ArrayList<>());
     }
@@ -46,7 +47,8 @@ public class JdbcStudentRepository implements StudentRepository {
         public StudentEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new StudentEntity(
                 rs.getLong("user_id"),
-                rs.getLong("session_id"));
+                rs.getLong("session_id"),
+                rs.getBoolean("selected"));
         }
     }
 }
