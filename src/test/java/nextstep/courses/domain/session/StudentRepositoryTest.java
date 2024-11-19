@@ -50,14 +50,14 @@ class StudentRepositoryTest {
     void select() {
         List<Long> userIds = List.of(1L, 2L);
 
-        int selectedStudents = studentRepository.select(1L, userIds);
+        int selectedStudents = studentRepository.updateApproved(1L, userIds);
         Assertions.assertThat(selectedStudents).isEqualTo(userIds.size());
     }
 
     @Test
     void cancel() {
         long userId = 1L;
-        studentRepository.cancel(1L, userId);
+        studentRepository.updateDisapproved(1L, userId);
 
         List<StudentEntity> selected = studentRepository.findByIdAndSessionId(1L, List.of(userId));
 

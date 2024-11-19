@@ -62,7 +62,7 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public int select(long sessionId, List<Long> userIds) {
+    public int updateApproved(long sessionId, List<Long> userIds) {
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("sessionId", sessionId);
         parameterMap.put("userIds", userIds);
@@ -74,7 +74,7 @@ public class JdbcStudentRepository implements StudentRepository {
     }
 
     @Override
-    public int cancel(long sessionId, long userId) {
+    public int updateDisapproved(long sessionId, long userId) {
         findByIdAndSessionId(sessionId, List.of(userId));
 
         Map<String, Object> parameterMap = new HashMap<>();

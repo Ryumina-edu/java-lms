@@ -12,7 +12,7 @@ public interface StudentRepository {
 
     List<StudentEntity> findByIdAndSessionId(long sessionId, List<Long> userIds);
 
-    int select(long sessionId, List<Long> userIdList);
+    int updateApproved(long sessionId, List<Long> userIdList);
 
-    int cancel(long sessionId, long userId);
+    int updateDisapproved(long sessionId, long userId);
 }

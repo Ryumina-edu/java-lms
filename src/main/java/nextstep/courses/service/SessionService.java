@@ -49,12 +49,12 @@ public class SessionService {
             throw new NoSuchElementException("[id:" + nonExistStudent.get() + "] 존재하지 않는 수강생입니다.");
         }
 
-        studentRepository.select(sessionId, userIdList);
+        studentRepository.updateApproved(sessionId, userIdList);
     }
 
     @Transactional
     public void cancel(long sessionId, long userId) {
-        studentRepository.cancel(sessionId, userId);
+        studentRepository.updateDisapproved(sessionId, userId);
     }
 
 }
