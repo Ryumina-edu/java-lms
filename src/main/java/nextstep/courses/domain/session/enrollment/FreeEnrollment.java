@@ -17,7 +17,7 @@ public class FreeEnrollment implements Enrollment {
 
     @Override
     public void enroll(NsUser student, Payment payment) {
-        if (!status.isRecruit() || enrollmentStatus.isImPossible()) {
+        if (!status.isProgress() || enrollmentStatus.isImPossible()) {
             throw new CannotApplyException("현재 모집중인 강의가 아닙니다.");
         }
 

@@ -7,18 +7,20 @@ import nextstep.users.domain.NsUser;
 public class PayEnrollment implements Enrollment {
 
     private final Status status;
+    private final EnrollmentStatus enrollmentStatus;
     private final Students students;
     private final Price price;
 
-    public PayEnrollment(Status status, Students students, Price price) {
+    public PayEnrollment(Status status, EnrollmentStatus enrollmentStatus, Students students, Price price) {
         this.status = status;
+        this.enrollmentStatus = enrollmentStatus;
         this.students = students;
         this.price = price;
     }
 
     @Override
     public void enroll(NsUser student, Payment payment) {
-        if (!status.isRecruit()) {
+        if (!status.isProgress() || enrollmentStatus.isImPossible()) {
             throw new CannotApplyException("현재 모집중인 강의가 아닙니다.");
         }
 

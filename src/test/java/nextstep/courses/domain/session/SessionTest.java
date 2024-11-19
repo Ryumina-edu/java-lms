@@ -31,7 +31,7 @@ class SessionTest {
         SessionInfo sessionInfo = new SessionInfo("강의1", List.of(sessionCoverImage), 1L);
 
         Students students = new Students(0);
-        Enrollment freeEnrollment = new FreeEnrollment(Status.RECRUIT, EnrollmentStatus.POSSIBLE, students);
+        Enrollment freeEnrollment = new FreeEnrollment(Status.PROGRESS, EnrollmentStatus.POSSIBLE, students);
 
         SessionPeriod sessionPeriod = new SessionPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(30L));
 

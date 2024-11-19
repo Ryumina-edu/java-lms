@@ -140,6 +140,7 @@ public class SessionEntity {
             return new Session(
                 new SessionInfo(title, sessionCoverImages, creatorId),
                 new PayEnrollment(Status.valueOf(status),
+                                  EnrollmentStatus.valueOf(enrollmentStatus),
                                   new Students(maxStudentCount, students),
                                   new Price(price, PayType.valueOf(payType))),
                 new SessionPeriod(startDateTime, endDateTime));
@@ -147,7 +148,9 @@ public class SessionEntity {
 
         return new Session(
             new SessionInfo(title, sessionCoverImages, creatorId),
-            new FreeEnrollment(Status.valueOf(status), EnrollmentStatus.valueOf(enrollmentStatus), new Students(maxStudentCount, students)),
+            new FreeEnrollment(Status.valueOf(status),
+                               EnrollmentStatus.valueOf(enrollmentStatus),
+                               new Students(maxStudentCount, students)),
             new SessionPeriod(startDateTime, endDateTime));
     }
 }
