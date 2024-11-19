@@ -67,7 +67,7 @@ create table session (
 create table student (
     user_id bigint not null,
     session_id bigint not null,
-    selected boolean not null,
+    approval_status VARCHAR(30) not null,
     UNIQUE (user_id, session_id)
 );
 
