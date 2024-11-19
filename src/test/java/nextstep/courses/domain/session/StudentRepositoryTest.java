@@ -47,20 +47,20 @@ class StudentRepositoryTest {
     }
 
     @Test
-    void select() {
+    void update_approved() {
         List<Long> userIds = List.of(1L, 2L);
 
-        int selectedStudents = studentRepository.updateApproved(1L, userIds);
-        Assertions.assertThat(selectedStudents).isEqualTo(userIds.size());
+        int approvedStudents = studentRepository.updateApproved(1L, userIds);
+        Assertions.assertThat(approvedStudents).isEqualTo(userIds.size());
     }
 
     @Test
-    void cancel() {
+    void update_disapproved() {
         long userId = 1L;
         studentRepository.updateDisapproved(1L, userId);
 
-        List<StudentEntity> selected = studentRepository.findByIdAndSessionId(1L, List.of(userId));
+        List<StudentEntity> disapprovedStudents = studentRepository.findByIdAndSessionId(1L, List.of(userId));
 
-        Assertions.assertThat(ApprovalStatus.isDisapproved(selected.get(0).getApprovalStatus())).isTrue();
+        Assertions.assertThat(ApprovalStatus.isDisapproved(disapprovedStudents.get(0).getApprovalStatus())).isTrue();
     }
 }

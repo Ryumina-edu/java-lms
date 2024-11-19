@@ -35,7 +35,7 @@ public class SessionService {
     }
 
     @Transactional
-    public void select(long sessionId, List<Long> userIdList) {
+    public void approve(long sessionId, List<Long> userIdList) {
         List<StudentEntity> selectedStudents = studentRepository.findByIdAndSessionId(sessionId, userIdList);
 
         Optional<Long> nonExistStudent = userIdList.stream()
@@ -53,7 +53,7 @@ public class SessionService {
     }
 
     @Transactional
-    public void cancel(long sessionId, long userId) {
+    public void disapprove(long sessionId, long userId) {
         studentRepository.updateDisapproved(sessionId, userId);
     }
 
