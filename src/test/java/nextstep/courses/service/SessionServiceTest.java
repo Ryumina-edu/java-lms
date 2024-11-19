@@ -2,6 +2,7 @@ package nextstep.courses.service;
 
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.StudentRepository;
+import nextstep.courses.domain.session.enrollment.ApprovalStatus;
 import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageRepository;
 import nextstep.courses.infrastructure.JdbcSessionCoverImageRepository;
@@ -83,8 +84,8 @@ class SessionServiceTest {
 
         List<StudentEntity> selectedStudents = studentRepository.findByIdAndSessionId(1L, userIds);
 
-        Assertions.assertThat(selectedStudents.get(0).isSelected()).isTrue();
-        Assertions.assertThat(selectedStudents.get(1).isSelected()).isTrue();
+        Assertions.assertThat(ApprovalStatus.isApproved(selectedStudents.get(0).getApprovalStatus())).isTrue();
+        Assertions.assertThat(ApprovalStatus.isApproved(selectedStudents.get(1).getApprovalStatus())).isTrue();
     }
 
     @Test
@@ -104,6 +105,6 @@ class SessionServiceTest {
 
         List<StudentEntity> selected = studentRepository.findByIdAndSessionId(1L, List.of(userId));
 
-        Assertions.assertThat(selected.get(0).isSelected()).isFalse();
+        Assertions.assertThat(ApprovalStatus.isDisapproved(selected.get(0).getApprovalStatus())).isTrue();
     }
 }

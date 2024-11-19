@@ -1,18 +1,20 @@
 package nextstep.courses.domain.session.entity;
 
+import nextstep.courses.domain.session.enrollment.ApprovalStatus;
+
 public class StudentEntity {
     private final long userId;
     private final long sessionId;
-    private final boolean selected;
+    private final String approvalStatus;
 
     public StudentEntity(long userId, long sessionId) {
-        this(userId, sessionId, false);
+        this(userId, sessionId, ApprovalStatus.DISAPPROVED.name());
     }
 
-    public StudentEntity(long userId, long sessionId, boolean selected) {
+    public StudentEntity(long userId, long sessionId, String approvalStatus) {
         this.userId = userId;
         this.sessionId = sessionId;
-        this.selected = selected;
+        this.approvalStatus = approvalStatus;
     }
 
     public long getUserId() {
@@ -23,8 +25,8 @@ public class StudentEntity {
         return sessionId;
     }
 
-    public boolean isSelected() {
-        return selected;
+    public String getApprovalStatus() {
+        return approvalStatus;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class StudentEntity {
         return "StudentEntity{" +
             "userId=" + userId +
             ", sessionId=" + sessionId +
-            ", selected=" + selected +
+            ", approvalStatus='" + approvalStatus + '\'' +
             '}';
     }
 }

@@ -1,5 +1,6 @@
 package nextstep.courses.domain.session;
 
+import nextstep.courses.domain.session.enrollment.ApprovalStatus;
 import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.courses.infrastructure.JdbcStudentRepository;
 import nextstep.users.domain.NsUser;
@@ -60,6 +61,6 @@ class StudentRepositoryTest {
 
         List<StudentEntity> selected = studentRepository.findByIdAndSessionId(1L, List.of(userId));
 
-        Assertions.assertThat(selected.get(0).isSelected()).isFalse();
+        Assertions.assertThat(ApprovalStatus.isDisapproved(selected.get(0).getApprovalStatus())).isTrue();
     }
 }

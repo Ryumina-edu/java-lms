@@ -1,6 +1,7 @@
 package nextstep.courses.infrastructure;
 
 import nextstep.courses.domain.session.StudentRepository;
+import nextstep.courses.domain.session.enrollment.ApprovalStatus;
 import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.qna.NotFoundException;
 import nextstep.users.domain.NsUser;
@@ -30,19 +31,19 @@ public class JdbcStudentRepository implements StudentRepository {
 
     @Override
     public int save(NsUser student, long sessionId) {
-        String sql = "insert into student (user_id, session_id, selected) values(?, ?, ?)";
+        String sql = "insert into student (user_id, session_id, approval_status) values(?, ?, ?)";
 
         StudentEntity studentEntity = new StudentEntity(student.getId(), sessionId);
 
         return jdbcTemplate.update(sql,
                                    studentEntity.getUserId(),
                                    studentEntity.getSessionId(),
-                                   studentEntity.isSelected());
+                                   studentEntity.getApprovalStatus());
     }
 
     @Override
     public List<StudentEntity> findBySessionId(long sessionId) {
-        String sql = "select user_id, session_id, selected from student where session_id = ?";
+        String sql = "select user_id, session_id, approval_status from student where session_id = ?";
 
         return Optional.ofNullable(jdbcTemplate.query(sql, STUDENT_ROW_MAPPER, sessionId)).orElse(new ArrayList<>());
     }
@@ -53,7 +54,7 @@ public class JdbcStudentRepository implements StudentRepository {
         parameterMap.put("sessionId", sessionId);
         parameterMap.put("userIds", userIds);
 
-        String sql = "select user_id, session_id, selected from student where session_id = :sessionId and user_id in (:userIds)";
+        String sql = "select user_id, session_id, approval_status from student where session_id = :sessionId and user_id in (:userIds)";
 
         return Optional.ofNullable(namedParameterJdbcTemplate.query(sql, parameterMap, STUDENT_ROW_MAPPER))
                        .filter(data -> !data.isEmpty())
@@ -65,19 +66,25 @@ public class JdbcStudentRepository implements StudentRepository {
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("sessionId", sessionId);
         parameterMap.put("userIds", userIds);
+        parameterMap.put("status", ApprovalStatus.APPROVED.name());
 
-        String sql = "update student set selected = true where session_id = :sessionId and user_id in (:userIds)";
+        String sql = "update student set approval_status = :status where session_id = :sessionId and user_id in (:userIds)";
 
         return namedParameterJdbcTemplate.update(sql, parameterMap);
     }
 
     @Override
-    public void cancel(long sessionId, long userId) {
+    public int cancel(long sessionId, long userId) {
         findByIdAndSessionId(sessionId, List.of(userId));
 
-        String sql = "update student set selected = false where session_id = ? and user_id = ?";
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("sessionId", sessionId);
+        parameterMap.put("userId", userId);
+        parameterMap.put("status", ApprovalStatus.DISAPPROVED.name());
 
-        jdbcTemplate.update(sql, sessionId, userId);
+        String sql = "update student set approval_status = :status where session_id = :sessionId and user_id = :userId";
+
+        return namedParameterJdbcTemplate.update(sql, parameterMap);
     }
 
     private class StudentRowMapper implements RowMapper<StudentEntity> {
@@ -87,7 +94,7 @@ public class JdbcStudentRepository implements StudentRepository {
             return new StudentEntity(
                 rs.getLong("user_id"),
                 rs.getLong("session_id"),
-                rs.getBoolean("selected"));
+                rs.getString("approval_status"));
         }
     }
 }
