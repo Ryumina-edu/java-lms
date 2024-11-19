@@ -14,7 +14,7 @@ INSERT INTO question (id, writer_id, title, contents, created_at, deleted) VALUE
 INSERT INTO SESSION (title, creator_id, status, enrollment_status, price, pay_type, max_student_count, cover_image_id, start_date_time, end_date_time) VALUES
 ('자바 강의 1', 1, 'PREPARE', 'IMPOSSIBLE', 800000, 'PAY', 100, 1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 INSERT INTO SESSION (title, creator_id, status, enrollment_status, price, pay_type, max_student_count, cover_image_id, start_date_time, end_date_time) VALUES
-('자바 강의 2', 1, 'RECRUIT', 'POSSIBLE', 800000, 'PAY', 100, 1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+('자바 강의 2', 1, 'PROGRESS', 'POSSIBLE', 800000, 'PAY', 100, 1, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
 INSERT INTO student (user_id, session_id, approval_status) VALUES (1, 1, 'APPROVED');
 INSERT INTO student (user_id, session_id, approval_status) VALUES (2, 1, 'DISAPPROVED');
