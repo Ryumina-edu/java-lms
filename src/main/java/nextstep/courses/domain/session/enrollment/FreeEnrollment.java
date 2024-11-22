@@ -4,6 +4,8 @@ import nextstep.courses.CannotApplyException;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 
+import java.util.List;
+
 public class FreeEnrollment implements Enrollment {
     private final Status status;
     private final EnrollmentStatus enrollmentStatus;
@@ -28,4 +30,8 @@ public class FreeEnrollment implements Enrollment {
         students.enroll(student);
     }
 
+    @Override
+    public void approve(List<Long> userIdList) {
+        students.approve(userIdList);
+    }
 }

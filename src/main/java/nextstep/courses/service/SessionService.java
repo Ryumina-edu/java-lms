@@ -3,16 +3,12 @@ package nextstep.courses.service;
 import nextstep.courses.domain.session.Session;
 import nextstep.courses.domain.session.SessionRepository;
 import nextstep.courses.domain.session.StudentRepository;
-import nextstep.courses.domain.session.entity.StudentEntity;
 import nextstep.payments.domain.Payment;
 import nextstep.users.domain.NsUser;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service("sessionService")
 public class SessionService {
@@ -36,18 +32,8 @@ public class SessionService {
 
     @Transactional
     public void approve(long sessionId, List<Long> userIdList) {
-        List<StudentEntity> selectedStudents = studentRepository.findByIdAndSessionId(sessionId, userIdList);
-
-        Optional<Long> nonExistStudent = userIdList.stream()
-                                                   .filter(userId -> !selectedStudents.stream()
-                                                                                      .map(StudentEntity::getUserId)
-                                                                                      .collect(Collectors.toList()).contains(userId)
-                                                   )
-                                                   .findAny();
-
-        if (nonExistStudent.isPresent()) {
-            throw new NoSuchElementException("[id:" + nonExistStudent.get() + "] 존재하지 않는 수강생입니다.");
-        }
+        Session session = sessionRepository.findByIdForSession(sessionId);
+        session.approve(userIdList);
 
         studentRepository.updateApproved(sessionId, userIdList);
     }
