@@ -6,11 +6,14 @@ import nextstep.courses.domain.session.sessioncoverimage.SessionCoverImageReposi
 import nextstep.qna.NotFoundException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,21 +22,24 @@ public class JdbcSessionCoverImageRepository implements SessionCoverImageReposit
     private final SessionCoverImageRowMapper SESSION_COVER_IMAGE_ROW_MAPPER = new SessionCoverImageRowMapper();
 
     private final JdbcOperations jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public JdbcSessionCoverImageRepository(JdbcOperations jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
     }
 
     @Override
     public SessionCoverImage findById(long coverImageId) {
-        String sql = "select id, session_id, image_type, width, height, size from cover_image where id = ?";
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("coverImageId", coverImageId);
 
-        SessionCoverImageEntity sessionCoverImageEntity = Optional.ofNullable(jdbcTemplate.queryForObject(sql,
-                                                                                                          SESSION_COVER_IMAGE_ROW_MAPPER,
-                                                                                                          coverImageId))
-                                                                  .orElseThrow(NotFoundException::new);
+        String sql = "select id, session_id, image_type, width, height, size from cover_image where id = :coverImageId";
 
-        return sessionCoverImageEntity.toSessionCoverImage();
+        return Optional.ofNullable(namedParameterJdbcTemplate.query(sql, parameterMap, SESSION_COVER_IMAGE_ROW_MAPPER))
+                       .filter(data -> !data.isEmpty())
+                       .orElseThrow(NotFoundException::new)
+                       .get(0).toSessionCoverImage();
     }
 
     @Override
